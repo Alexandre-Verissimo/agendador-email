@@ -5,13 +5,16 @@ import { SendEmailInterface } from '../interface/send-email.interface';
 
 @Injectable()
 export class SendgridService {
+  private readonly SENDGRID_API_URL = process.env.SENDGRID_API_URL;
+  private readonly SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+
   constructor(private readonly httpService: HttpService) {}
 
   async sendEmail(data: SendEmailInterface): Promise<boolean> {
-    const url = 'https://api.sendgrid.com/v3/mail/send';
+    const url = `${this.SENDGRID_API_URL}/mail/send`;
     const config = {
       headers: {
-        Authorization: 'Baerer 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',
+        Authorization: `Bearer ${this.SENDGRID_API_KEY}`,
       },
     };
 
