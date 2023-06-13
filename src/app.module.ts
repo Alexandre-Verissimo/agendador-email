@@ -1,3 +1,4 @@
+import { MailModule } from './app/mail/mail.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -17,6 +18,7 @@ import { SendgridModule } from './app/sendgrid/sendgrid.module';
       entities: [__dirname + '/**/*.entity{.js,.ts}'],
     }),
     SendgridModule,
+    MailModule,
   ],
   controllers: [],
   providers: [],

@@ -15,13 +15,16 @@ describe('MailService', () => {
         MailService,
         {
           provide: getRepositoryToken(MailEntity),
-          useValue: {},
+          useValue: {
+            create: jest.fn(),
+            save: jest.fn(),
+          },
         },
       ],
     }).compile();
 
     mailService = module.get<MailService>(MailService);
-    mailRepository: module.get<Repository<MailEntity>>(getRepositoryToken(MailEntity));
+    mailRepository = module.get<Repository<MailEntity>>(getRepositoryToken(MailEntity));
   });
 
   it('should be defined', () => {
@@ -33,14 +36,23 @@ describe('MailService', () => {
     it('should save a new email with sucess', async () => {
       //Arrange
       const data: SaveMailDto = {
+        destinationName: 'User',
         destinationAddress: 'user@email.com',
         dueDate: '2022-05-01T12:00:00Z',
+        subject: 'Email test',
+        body: '<p>H1</p>',
       };
+      const mailEntityMock = {
+        ...data,
+      } as MailEntity;
+      jest.spyOn(mailRepository, 'create').mockReturnValueOnce(mailEntityMock);
+      jest.spyOn(mailRepository, 'save').mockResolvedValueOnce(mailEntityMock);
       //Act
       const result = await mailService.save(data);
       //Assert
       expect(result).toBeDefined();
-      expect
+      expect(mailRepository.create).toBeCalledTimes(1);
+      expect(mailRepository.save).toBeCalledTimes(1);
     });
   });
 });

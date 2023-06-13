@@ -1,5 +1,5 @@
 import { SaveMailDto } from './dto/save-mail-dto';
-import { Injectable, Post } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MailEntity } from './mail.entity';
@@ -12,6 +12,6 @@ export class MailService {
   ) {}
 
   async save(data: SaveMailDto): Promise<MailEntity> {
-    return undefined;
+    return this.mailRepository.save(this.mailRepository.create(data));
   }
 }
